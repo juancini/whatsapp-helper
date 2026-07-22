@@ -36,13 +36,10 @@ Para cerrar la app, cerrá la ventana negra (o Ctrl+C dentro de ella).
 ## Uso diario
 
 - **Pantalla principal**: un botón por cada respuesta armada (ej. "Promo
-  Sofá", "Horarios de atención"). Tocás el botón → se elige una variación,
-  se copia sola, y aparece grande en pantalla para que la pegues en
-  WhatsApp con `Ctrl+V`.
-- **Buscador** arriba: escribí cualquier palabra (ej. "sofá", "horario") y
-  filtra los botones al toque — como buscar un `/comando`.
-- **"Elegir otra variación"**: si no te convence la que salió, tocás este
-  botón y prueba otra sin repetir la misma dos veces.
+  Sofá", "Horarios de atención"). Tocás el botón una vez → elige una variación distinta,
+  se copia al portapapeles con una animación y preview instantáneo en el botón.
+  ¡Listo para pegar en WhatsApp con `Ctrl+V` sin ventanas emergentes!
+- **Siguiente variación**: si querés probar o enviar otra variante, simplemente volvés a tocar el mismo botón y rota a la siguiente al instante.
 - **"Gestionar"**: para agregar botones nuevos, sumar/editar/borrar
   variaciones de texto, o cambiar el color de un botón.
 - **"Historial"**: ver (y borrar) todo lo que se mandó, con fecha y hora.
@@ -83,3 +80,11 @@ whatsapp-helper/
   (auto-pegar el mensaje sin `Ctrl+V`) o generar variaciones nuevas con IA,
   se puede sumar después — quedó afuera de este prototipo a propósito para
   mantenerlo simple y confiable.
+
+## 🚀 Historial de Actualizaciones
+
+### v1.1 - Modo 1-Clic de Alta Velocidad (UI/UX)
+- **Cero Popups**: Se eliminó la ventana emergente (*modal overlay*) que obligaba a hacer un clic extra para cerrar o volver.
+- **Feedback en el Botón**: Al hacer clic en una tarjeta, se activa una animación de confirmación (`chipPulse`), aparece la insignia **`✓ Copiado`** y se muestra el texto elegido (*"Último copiado: ..."*) dentro del propio botón.
+- **Notificación Flotante**: Se agregó un cartel emergente (*toast*) en la esquina inferior derecha que confirma el texto copiado al portapapeles sin interrumpir el trabajo.
+- **Rotación en Ráfaga**: Podés hacer varios clics seguidos en el mismo botón para iterar entre las distintas variaciones de forma instantánea.

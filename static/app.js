@@ -1,6 +1,7 @@
 const state = {
   categories: [],
   currentCategoryId: null,
+  lastCopiedByCat: {},
 };
 
 const el = (id) => document.getElementById(id);
@@ -52,13 +53,23 @@ function renderGrid(filterText = '') {
   visible.forEach((cat) => {
     const btn = document.createElement('button');
     btn.className = 'chip';
+    btn.dataset.id = cat.id;
     btn.style.setProperty('--chip-color', cat.color);
     const totalUses = cat.variations.reduce((a, v) => a + v.times_used, 0);
+    const lastCopied = state.lastCopiedByCat[cat.id];
+
     btn.innerHTML = `
-      <span class="chip-name">${escapeHtml(cat.name)}</span>
-      <span class="chip-meta">${cat.variations.length} variante${cat.variations.length === 1 ? '' : 's'} · usado ${totalUses}x</span>
+      <div class="chip-header">
+        <span class="chip-name">${escapeHtml(cat.name)}</span>
+        <span class="chip-badge ${lastCopied ? 'visible' : ''}">✓ Copiado</span>
+      </div>
+      <span class="chip-meta">${cat.variations.length} variante${cat.variations.length === 1 ? '' : 's'} · usado <span class="use-count">${totalUses}</span>x</span>
+      <div class="chip-preview ${lastCopied ? '' : 'hidden'}">
+        <span class="chip-preview-label">Último copiado:</span>
+        <span class="preview-text">${lastCopied ? escapeHtml(lastCopied) : ''}</span>
+      </div>
     `;
-    btn.addEventListener('click', () => pickAndShow(cat.id, cat.name));
+    btn.addEventListener('click', () => pickAndCopy(cat.id, btn));
     grid.appendChild(btn);
   });
 }
@@ -70,62 +81,71 @@ function escapeHtml(str) {
 }
 
 // ---------------------------------------------------------------------
-// Picking a variation + clipboard copy
+// Single-click picking + clipboard copy
 // ---------------------------------------------------------------------
 
-async function pickAndShow(catId, catName) {
-  state.currentCategoryId = catId;
+async function pickAndCopy(catId, btnElement) {
+  // Trigger click animation
+  btnElement.classList.remove('copied-flash');
+  void btnElement.offsetWidth; // force reflow
+  btnElement.classList.add('copied-flash');
+
   const res = await fetch(`/api/categories/${catId}/pick`, { method: 'POST' });
   const data = await res.json();
   if (!res.ok) {
     alert(data.error || 'No se pudo elegir una respuesta.');
     return;
   }
-  showResult(catName, data.text);
-  await copyToClipboard(data.text);
-  // refresh usage counters in the background
-  loadCategories();
-}
 
-function showResult(catName, text) {
-  el('resultCatName').textContent = catName;
-  el('resultText').textContent = text;
-  el('resultOverlay').classList.remove('hidden');
+  // 1. Copy to clipboard
+  await copyToClipboard(data.text);
+
+  // 2. Save in state
+  state.lastCopiedByCat[catId] = data.text;
+
+  // 3. Update chip inline
+  const badge = btnElement.querySelector('.chip-badge');
+  const preview = btnElement.querySelector('.chip-preview');
+  const previewText = btnElement.querySelector('.preview-text');
+
+  if (badge) badge.classList.add('visible');
+  if (preview) preview.classList.remove('hidden');
+  if (previewText) previewText.textContent = data.text;
+
+  // 4. Show global floating notification
+  showGlobalToast(`"${data.text}"`);
+
+  // 5. Refresh categories usage in background
+  const resCats = await fetch('/api/categories');
+  state.categories = await resCats.json();
+  const catObj = state.categories.find((c) => c.id === catId);
+  if (catObj && btnElement.querySelector('.use-count')) {
+    const totalUses = catObj.variations.reduce((a, v) => a + v.times_used, 0);
+    btnElement.querySelector('.use-count').textContent = totalUses;
+  }
 }
 
 async function copyToClipboard(text) {
   try {
     await navigator.clipboard.writeText(text);
-    showCopiedToast();
   } catch (e) {
-    // Clipboard API can fail without HTTPS/focus in some setups; the text
-    // is still visible in the card so she can select & copy manually.
     console.warn('No se pudo copiar automáticamente', e);
   }
 }
 
-function showCopiedToast() {
-  const toast = el('copiedToast');
+function showGlobalToast(text) {
+  const toast = el('globalToast');
+  const toastText = el('toastText');
+  if (!toast || !toastText) return;
+
+  toastText.textContent = text;
   toast.classList.remove('hidden');
-  clearTimeout(showCopiedToast._t);
-  showCopiedToast._t = setTimeout(() => toast.classList.add('hidden'), 1600);
+
+  clearTimeout(showGlobalToast._t);
+  showGlobalToast._t = setTimeout(() => {
+    toast.classList.add('hidden');
+  }, 3000);
 }
-
-el('copyAgainBtn').addEventListener('click', () => {
-  copyToClipboard(el('resultText').textContent);
-});
-
-el('rerollBtn').addEventListener('click', () => {
-  const catName = el('resultCatName').textContent;
-  pickAndShow(state.currentCategoryId, catName);
-});
-
-el('closeResultBtn').addEventListener('click', () => {
-  el('resultOverlay').classList.add('hidden');
-});
-el('resultOverlay').addEventListener('click', (e) => {
-  if (e.target === el('resultOverlay')) el('resultOverlay').classList.add('hidden');
-});
 
 // ---------------------------------------------------------------------
 // Search
