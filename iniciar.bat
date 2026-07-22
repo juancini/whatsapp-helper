@@ -11,12 +11,4 @@ if not exist venv (
     call venv\Scripts\activate.bat
 )
 
-echo.
-echo Abriendo Respuestas Rapidas en tu navegador...
-echo No cierres esta ventana negra mientras la estes usando.
-echo.
-
-start "" http://127.0.0.1:5050
-python app.py
-
-pause
+start "" venv\Scripts\pythonw.exe app.py

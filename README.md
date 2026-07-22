@@ -83,6 +83,10 @@ whatsapp-helper/
 
 ## 🚀 Historial de Actualizaciones
 
+### v1.3 - Aplicación de Escritorio Nativa (pywebview)
+- **Ventana Nativa Independiente**: Ahora se abre directamente como una aplicación de escritorio con la librería `pywebview` (sin abrir pestañas en el navegador web ni mostrar ventanas negras de consola en Windows).
+- **Ejecutable .exe**: Se incluyó el script `build_exe.py` para generar una carpeta o instalable ejecutable sin necesidad de instalar Python.
+
 ### v1.2 - Edición Rápida con Menú de 3 Puntos (⋮)
 - **Botón de Opciones (⋮) en cada tarjeta**: Se añadió un menú de tres puntos en la esquina superior derecha de cada botón de respuesta.
 - **Edición rápida sin scroll**: Al hacer clic en los tres puntos, se abre un cuadro flotante (*modal*) directo para ese botón donde podés cambiar su nombre, color, editar o borrar variantes, y **agregar variantes nuevas al toque** sin tener que ir a "Gestionar" ni hacer scroll.

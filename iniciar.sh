@@ -10,15 +10,4 @@ else
     source venv/bin/activate
 fi
 
-echo ""
-echo "Abriendo Respuestas Rápidas en http://127.0.0.1:5050 ..."
-echo "Presioná Ctrl+C para salir."
-echo ""
-
-if command -v xdg-open > /dev/null; then
-    (sleep 1 && xdg-open http://127.0.0.1:5050) &
-elif command -v open > /dev/null; then
-    (sleep 1 && open http://127.0.0.1:5050) &
-fi
-
 python3 app.py

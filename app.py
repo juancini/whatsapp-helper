@@ -11,6 +11,8 @@ All data is stored locally in data.db (SQLite) next to this file.
 import sqlite3
 import random
 import os
+import threading
+import webbrowser
 from datetime import datetime
 from flask import Flask, g, jsonify, request, send_from_directory
 
@@ -347,5 +349,28 @@ def clear_history():
 
 if __name__ == "__main__":
     init_db()
-    print("\n  Respuestas Rápidas corriendo en: http://127.0.0.1:5050\n")
-    app.run(host="127.0.0.1", port=5050, debug=False)
+
+    # Try launching as a native desktop window using pywebview
+    try:
+        import webview
+
+        def run_server():
+            app.run(host="127.0.0.1", port=5050, debug=False, use_reloader=False)
+
+        server_thread = threading.Thread(target=run_server, daemon=True)
+        server_thread.start()
+
+        print("\n  Iniciando Respuestas Rápidas en ventana nativa...\n")
+        webview.create_window(
+            title="Respuestas Rápidas",
+            url="http://127.0.0.1:5050",
+            width=980,
+            height=720,
+            min_size=(450, 550),
+        )
+        webview.start()
+    except Exception as e:
+        print(f"\n  pywebview no disponible ({e}). Abriendo en navegador por defecto...\n")
+        print("  Respuestas Rápidas corriendo en: http://127.0.0.1:5050\n")
+        webbrowser.open("http://127.0.0.1:5050")
+        app.run(host="127.0.0.1", port=5050, debug=False)
