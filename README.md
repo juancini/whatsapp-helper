@@ -84,8 +84,9 @@ whatsapp-helper/
 ## 🚀 Historial de Actualizaciones
 
 ### v1.3 - Aplicación de Escritorio Nativa (pywebview)
-- **Ventana Nativa Independiente**: Ahora se abre directamente como una aplicación de escritorio con la librería `pywebview` (sin abrir pestañas en el navegador web ni mostrar ventanas negras de consola en Windows).
-- **Ejecutable .exe**: Se incluyó el script `build_exe.py` para generar una carpeta o instalable ejecutable sin necesidad de instalar Python.
+- **Ventana Nativa Independiente**: Se abre directamente como una aplicación de escritorio con `pywebview` (sin abrir pestañas en el navegador web ni mostrar consolas negras).
+- **Empaquetador Windows**: Script `crear_pack_windows.bat` que genera la carpeta ejecutable y comprimible `.zip` para enviar a usuarios de Windows.
+- **Empaquetador Linux (Zorin OS / Ubuntu)**: Script `crear_pack_linux.sh` que compila la aplicación nativa en Linux dentro de `dist/RespuestasRapidas_Linux`.
 
 ### v1.2 - Edición Rápida con Menú de 3 Puntos (⋮)
 - **Botón de Opciones (⋮) en cada tarjeta**: Se añadió un menú de tres puntos en la esquina superior derecha de cada botón de respuesta.
