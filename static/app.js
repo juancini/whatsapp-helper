@@ -471,7 +471,34 @@ async function renderHistory() {
 }
 
 // ---------------------------------------------------------------------
+// Theme Toggle (Dark / Light)
+// ---------------------------------------------------------------------
+
+function initTheme() {
+  const saved = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = saved ? saved === 'dark' : prefersDark;
+  setTheme(isDark ? 'dark' : 'light');
+}
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+  const btn = el('themeToggleBtn');
+  if (btn) {
+    btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    btn.title = theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+  }
+}
+
+el('themeToggleBtn').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  setTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+// ---------------------------------------------------------------------
 // Init
 // ---------------------------------------------------------------------
 
+initTheme();
 loadCategories();

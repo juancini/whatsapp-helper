@@ -1,16 +1,25 @@
 :root {
-  --bg: #F6F4EF;
+  --bg: #ECE8E1;
   --surface: #FFFFFF;
-  --text: #24262B;
-  --muted: #6B6F76;
-  --border: #E5E0D6;
+  --text: #1C1E22;
+  --muted: #5C6068;
+  --border: #D8D2C5;
   --primary: #1F6F63;
   --primary-dark: #164F46;
   --accent: #E8875A;
   --danger: #B5563D;
   --radius: 14px;
-  --shadow: 0 1px 2px rgba(36,38,43,0.05), 0 6px 20px rgba(36,38,43,0.06);
+  --shadow: 0 4px 14px rgba(36,38,43,0.08), 0 1px 3px rgba(36,38,43,0.05);
   font-size: 16px;
+}
+
+[data-theme="dark"] {
+  --bg: #121418;
+  --surface: #1B1E26;
+  --text: #F1F3F7;
+  --muted: #9BA0AA;
+  --border: #2C303B;
+  --shadow: 0 6px 20px rgba(0,0,0,0.4);
 }
 
 * { box-sizing: border-box; }
@@ -21,6 +30,7 @@ body {
   color: var(--text);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 h1, h2 { font-family: 'Sora', system-ui, sans-serif; margin: 0; }
@@ -112,19 +122,23 @@ h1, h2 { font-family: 'Sora', system-ui, sans-serif; margin: 0; }
   position: relative;
   text-align: left;
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-left: 6px solid var(--chip-color, var(--primary));
   border-radius: var(--radius);
   padding: 16px 18px;
   cursor: pointer;
   box-shadow: var(--shadow);
-  transition: transform 0.08s ease, box-shadow 0.15s ease, border-color 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.12s ease, box-shadow 0.15s ease, border-color 0.2s ease, background-color 0.2s ease;
   font-family: inherit;
   color: var(--text);
   display: flex;
   flex-direction: column;
 }
-.chip:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(36,38,43,0.1); }
+.chip:hover {
+  transform: translateY(-3px);
+  border-color: var(--chip-color, var(--primary));
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
 .chip:active { transform: translateY(0); }
 
 .chip.copied-flash {
@@ -306,6 +320,8 @@ h1, h2 { font-family: 'Sora', system-ui, sans-serif; margin: 0; }
   resize: vertical;
   min-height: 48px;
   border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
   border-radius: 8px;
   padding: 8px;
   font-family: inherit;
@@ -333,6 +349,8 @@ h1, h2 { font-family: 'Sora', system-ui, sans-serif; margin: 0; }
   padding: 10px;
   border-radius: 10px;
   border: 1px dashed var(--primary);
+  background: var(--surface);
+  color: var(--text);
   font-family: inherit;
   font-size: 13.5px;
 }

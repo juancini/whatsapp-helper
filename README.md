@@ -83,6 +83,10 @@ whatsapp-helper/
 
 ## 🚀 Historial de Actualizaciones
 
+### v1.4 - Selector de Tema Oscuro / Claro y Alto Contraste (UI/UX)
+- **Modo Oscuro / Claro Toggle (🌙 / ☀️)**: Botón en la barra superior que permite alternar instantáneamente entre el tema claro con alto contraste y un tema oscuro profesional estilo WhatsApp Web / Discord. Guarda la preferencia en el navegador.
+- **Bordes y Contraste Mejorados**: Se ajustó el fondo general (`#ECE8E1` en modo claro y `#121418` en modo oscuro) y se añadieron bordes de 1.5px con acentos del color de cada categoría, evitando que los botones se fundan con el fondo en monitores con diferente brillo.
+
 ### v1.3 - Aplicación de Escritorio Nativa (pywebview)
 - **Ventana Nativa Independiente**: Se abre directamente como una aplicación de escritorio con `pywebview` (sin abrir pestañas en el navegador web ni mostrar consolas negras).
 - **Empaquetador Windows**: Script `crear_pack_windows.bat` que genera la carpeta ejecutable y comprimible `.zip` para enviar a usuarios de Windows.
