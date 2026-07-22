@@ -97,3 +97,7 @@ whatsapp-helper/
 - **Cero Popups**: Se eliminó el diálogo emergente que requería clics extra.
 - **Feedback en el Botón**: Animación de pulso, distintivo `✓ Copiado` y preview del texto elegido dentro de la tarjeta.
 - **Notificación Flotante**: Cartel *toast* en la esquina inferior derecha confirmando el copiado.
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia **MIT** — consulta el archivo [LICENSE](file:///home/juani/Documents/proyects/whatsapp-helper/LICENSE) para más detalles. Incluye exención de responsabilidad ("AS IS") para proyectos de código abierto.
