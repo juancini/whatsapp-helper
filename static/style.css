@@ -152,6 +152,29 @@ h1, h2 { font-family: 'Sora', system-ui, sans-serif; margin: 0; }
   display: block;
 }
 
+.chip-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chip-options-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.chip-options-btn:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
 .chip-badge {
   font-size: 11px;
   font-weight: 700;
@@ -174,6 +197,153 @@ h1, h2 { font-family: 'Sora', system-ui, sans-serif; margin: 0; }
   font-size: 12px;
   color: var(--muted);
   margin-bottom: 8px;
+}
+
+/* ---------------- Modal overlay & card ---------------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(36,38,43,0.5);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.modal-card {
+  background: var(--surface);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 580px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.modal-title-input {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text);
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 4px 8px;
+  border-radius: 8px;
+  width: 100%;
+}
+.modal-title-input:focus {
+  border-color: var(--border);
+  background: var(--bg);
+  outline: none;
+}
+
+.modal-color-input {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 8px;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.modal-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+.modal-variations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.modal-var-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: var(--bg);
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.modal-var-row textarea {
+  flex: 1;
+  resize: vertical;
+  min-height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  font-family: inherit;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.modal-var-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.modal-add-variation {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.modal-add-variation textarea {
+  width: 100%;
+  min-height: 54px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px dashed var(--primary);
+  font-family: inherit;
+  font-size: 13.5px;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
 }
 
 .chip-preview {

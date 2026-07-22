@@ -64,6 +64,34 @@
   <div id="historyList" class="history-list"></div>
 </section>
 
+<!-- Quick Edit Modal -->
+<div id="quickEditModal" class="modal-overlay hidden">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <input id="editModalCatName" type="text" placeholder="Nombre del botón" class="modal-title-input">
+        <input id="editModalCatColor" type="color" title="Color del botón" class="modal-color-input">
+      </div>
+      <button id="closeEditModalBtn" class="btn btn-ghost btn-small">✕ Cerrar</button>
+    </div>
+
+    <div class="modal-body">
+      <h3 class="modal-section-title">Variaciones de respuesta</h3>
+      <div id="editModalVariationsList" class="modal-variations-list"></div>
+
+      <div class="modal-add-variation">
+        <textarea id="editModalNewVarText" placeholder="Escribí una nueva variación aquí..."></textarea>
+        <button id="editModalAddVarBtn" class="btn btn-primary">+ Agregar variante</button>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button id="editModalDeleteCatBtn" class="btn btn-danger btn-small">Eliminar este botón</button>
+      <button id="editModalDoneBtn" class="btn btn-primary">Listo</button>
+    </div>
+  </div>
+</div>
+
 <!-- Global floating toast notification -->
 <div id="globalToast" class="global-toast hidden">
   <div class="toast-content">

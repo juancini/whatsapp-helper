@@ -51,17 +51,20 @@ function renderGrid(filterText = '') {
   }
 
   visible.forEach((cat) => {
-    const btn = document.createElement('button');
-    btn.className = 'chip';
-    btn.dataset.id = cat.id;
-    btn.style.setProperty('--chip-color', cat.color);
+    const card = document.createElement('div');
+    card.className = 'chip';
+    card.dataset.id = cat.id;
+    card.style.setProperty('--chip-color', cat.color);
     const totalUses = cat.variations.reduce((a, v) => a + v.times_used, 0);
     const lastCopied = state.lastCopiedByCat[cat.id];
 
-    btn.innerHTML = `
+    card.innerHTML = `
       <div class="chip-header">
         <span class="chip-name">${escapeHtml(cat.name)}</span>
-        <span class="chip-badge ${lastCopied ? 'visible' : ''}">✓ Copiado</span>
+        <div class="chip-header-actions">
+          <span class="chip-badge ${lastCopied ? 'visible' : ''}">✓ Copiado</span>
+          <button class="chip-options-btn" title="Editar este botón y sus variaciones">⋮</button>
+        </div>
       </div>
       <span class="chip-meta">${cat.variations.length} variante${cat.variations.length === 1 ? '' : 's'} · usado <span class="use-count">${totalUses}</span>x</span>
       <div class="chip-preview ${lastCopied ? '' : 'hidden'}">
@@ -69,10 +72,128 @@ function renderGrid(filterText = '') {
         <span class="preview-text">${lastCopied ? escapeHtml(lastCopied) : ''}</span>
       </div>
     `;
-    btn.addEventListener('click', () => pickAndCopy(cat.id, btn));
-    grid.appendChild(btn);
+
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.chip-options-btn')) return;
+      pickAndCopy(cat.id, card);
+    });
+
+    const optBtn = card.querySelector('.chip-options-btn');
+    if (optBtn) {
+      optBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openQuickEditModal(cat.id);
+      });
+    }
+
+    grid.appendChild(card);
   });
 }
+
+// ---------------------------------------------------------------------
+// Quick Edit Modal logic
+// ---------------------------------------------------------------------
+
+let activeEditCatId = null;
+
+async function openQuickEditModal(catId) {
+  activeEditCatId = catId;
+  const cat = state.categories.find((c) => c.id === catId);
+  if (!cat) return;
+
+  el('editModalCatName').value = cat.name;
+  el('editModalCatColor').value = cat.color;
+  el('editModalNewVarText').value = '';
+
+  renderQuickEditVariations(cat);
+  el('quickEditModal').classList.remove('hidden');
+}
+
+function renderQuickEditVariations(cat) {
+  const container = el('editModalVariationsList');
+  container.innerHTML = '';
+
+  if (!cat.variations || cat.variations.length === 0) {
+    container.innerHTML = '<p style="color: var(--muted); font-size: 13px; text-align: center; padding: 12px 0;">No hay respuestas guardadas aún. Escribí una abajo.</p>';
+    return;
+  }
+
+  cat.variations.forEach((v) => {
+    const row = document.createElement('div');
+    row.className = 'modal-var-row';
+
+    const ta = document.createElement('textarea');
+    ta.value = v.text;
+    ta.placeholder = 'Escribí la variación...';
+    ta.addEventListener('change', async () => {
+      await updateVariation(v.id, ta.value);
+    });
+
+    const stats = document.createElement('span');
+    stats.className = 'var-stats';
+    stats.textContent = `usado ${v.times_used}x`;
+
+    const delBtn = document.createElement('button');
+    delBtn.className = 'btn btn-ghost btn-small';
+    delBtn.innerHTML = '✕';
+    delBtn.title = 'Eliminar variante';
+    delBtn.addEventListener('click', async () => {
+      await deleteVariation(v.id);
+      const catObj = state.categories.find((c) => c.id === activeEditCatId);
+      if (catObj) renderQuickEditVariations(catObj);
+    });
+
+    row.appendChild(ta);
+    row.appendChild(stats);
+    row.appendChild(delBtn);
+    container.appendChild(row);
+  });
+}
+
+function closeQuickEditModal() {
+  el('quickEditModal').classList.add('hidden');
+  renderGrid(el('searchInput').value);
+}
+
+el('closeEditModalBtn').addEventListener('click', closeQuickEditModal);
+el('editModalDoneBtn').addEventListener('click', closeQuickEditModal);
+
+el('editModalCatName').addEventListener('change', async () => {
+  if (!activeEditCatId) return;
+  const name = el('editModalCatName').value.trim();
+  if (name) {
+    await updateCategory(activeEditCatId, { name });
+  }
+});
+
+el('editModalCatColor').addEventListener('change', async () => {
+  if (!activeEditCatId) return;
+  const color = el('editModalCatColor').value;
+  await updateCategory(activeEditCatId, { color });
+});
+
+el('editModalAddVarBtn').addEventListener('click', async () => {
+  if (!activeEditCatId) return;
+  const text = el('editModalNewVarText').value.trim();
+  if (!text) {
+    el('editModalNewVarText').focus();
+    return;
+  }
+  await addVariation(activeEditCatId, text);
+  el('editModalNewVarText').value = '';
+  const catObj = state.categories.find((c) => c.id === activeEditCatId);
+  if (catObj) renderQuickEditVariations(catObj);
+});
+
+el('editModalDeleteCatBtn').addEventListener('click', async () => {
+  if (!activeEditCatId) return;
+  const catObj = state.categories.find((c) => c.id === activeEditCatId);
+  const name = catObj ? catObj.name : 'este botón';
+  if (confirm(`¿Eliminar "${name}" y todas sus respuestas?`)) {
+    await deleteCategory(activeEditCatId);
+    closeQuickEditModal();
+  }
+});
 
 function escapeHtml(str) {
   const d = document.createElement('div');

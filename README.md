@@ -83,8 +83,12 @@ whatsapp-helper/
 
 ## 🚀 Historial de Actualizaciones
 
+### v1.2 - Edición Rápida con Menú de 3 Puntos (⋮)
+- **Botón de Opciones (⋮) en cada tarjeta**: Se añadió un menú de tres puntos en la esquina superior derecha de cada botón de respuesta.
+- **Edición rápida sin scroll**: Al hacer clic en los tres puntos, se abre un cuadro flotante (*modal*) directo para ese botón donde podés cambiar su nombre, color, editar o borrar variantes, y **agregar variantes nuevas al toque** sin tener que ir a "Gestionar" ni hacer scroll.
+- **Aislamiento de Clics**: Tocar los tres puntos abre la edición sin copiar el mensaje al portapapeles.
+
 ### v1.1 - Modo 1-Clic de Alta Velocidad (UI/UX)
-- **Cero Popups**: Se eliminó la ventana emergente (*modal overlay*) que obligaba a hacer un clic extra para cerrar o volver.
-- **Feedback en el Botón**: Al hacer clic en una tarjeta, se activa una animación de confirmación (`chipPulse`), aparece la insignia **`✓ Copiado`** y se muestra el texto elegido (*"Último copiado: ..."*) dentro del propio botón.
-- **Notificación Flotante**: Se agregó un cartel emergente (*toast*) en la esquina inferior derecha que confirma el texto copiado al portapapeles sin interrumpir el trabajo.
-- **Rotación en Ráfaga**: Podés hacer varios clics seguidos en el mismo botón para iterar entre las distintas variaciones de forma instantánea.
+- **Cero Popups**: Se eliminó el diálogo emergente que requería clics extra.
+- **Feedback en el Botón**: Animación de pulso, distintivo `✓ Copiado` y preview del texto elegido dentro de la tarjeta.
+- **Notificación Flotante**: Cartel *toast* en la esquina inferior derecha confirmando el copiado.
